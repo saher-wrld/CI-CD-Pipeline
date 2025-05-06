@@ -1,31 +1,27 @@
-name: Checking Tests
+name: Tets for Develop
 
+# Execute test upon PR to Dev branch
 on:
   pull_request:
     branches:
-      - develop
-      - staging
+      - develop # ID the branch for this yml
 
 jobs:
-  test:
-    name: Checking Tests
+  test-runner:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - name: CI/CD using Node 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
-
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Build App
-        run: npm run build
-
-      - name: Run vitest tests
-        run: npm run test
-
+          node-version: 22.x
+          cache: 'npm'
+      - name: install dependencies
+        run: npm ci
+      - name: Cypress run component tests
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run start
+          component: true # Runs component testing, IF this yml works
