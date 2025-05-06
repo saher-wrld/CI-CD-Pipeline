@@ -4,7 +4,9 @@ name: Tets for Develop
 on:
   pull_request:
     branches:
-      - develop # ID the branch for this yml
+
+      - develop
+
 
 jobs:
   test-runner:
@@ -17,11 +19,12 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
-      - name: install dependencies
-        run: npm ci
+          
       - name: Cypress run component tests
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
           start: npm run start
           component: true # Runs component testing, IF this yml works
+          install: true
+
